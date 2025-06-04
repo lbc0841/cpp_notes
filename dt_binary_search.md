@@ -3,34 +3,41 @@ title: "二分搜"
 
 ---
 
-## 預備知識
+## 二分搜 Binary Search
 
 ### 時間複雜度
 
 暴力遍歷 $` O(N) `$<br>
-二分搜索 $ O(logN) $<br>
-<br>
-使用二分搜索能大幅提升速度<br>
-e.g. 對於 $ 10^{6} $ 筆資料的 vector 而言<br>
-暴力總共需要比較 $ \color{Red} 10^{6} $ 次<br>
-而二分搜索則是 $ \left \lceil log_{2}10^{6} \right \rceil = \color{Red} 20 $ 次
+二分搜索 $` O(logN) `$<br>
+
+使用二分搜索的目的是提升速度<br>
+通常在 **需要多次查詢** 或是 **查詢範圍很大** 時會很有優勢
+
+*e.g.*<br>
+對於 $` 10^{6} `$ 筆資料的 vector 而言<br>
+暴力總共需要比較 $` \color{Red} 10^{6} `$ 次<br>
+而二分搜索則是 $` \left \lceil log_{2}10^{6} \right \rceil = \color{Red} 20 `$ 次
+
+### 使用條件
+
+二分搜用在<font color=#ff0000>排好序</font>的陣列上
 
 ### 加法溢位
 
-m 為 l 與 r 的中點，也就是 $ \left \lfloor \frac{l+r}{2}\right \rfloor $<br>
+m 為 l 與 r 的中點，也就是 $` \left \lfloor \frac{l+r}{2}\right \rfloor `$<br>
 可以寫成<br>
 `m = (l+r)/2;`<br>
 <br>
-其中為了避免加法時發生溢位的問題<br>
-可以改寫成<br>
+但是數字過大時，l+r 會 <font color=#ff0000>溢位</font><br>
+這時可以改寫成<br>
 `m = l + (r-l)/2;`
 
 ### 惡補數學
 
-閉區間 `[l, r]` 為 $ \left\{ x \in \mathbb{R}, l \leq x \leq r \right\} $<br>
-開區間 `(l, r)` 為 $ \left\{ x \in \mathbb{R}, l < x < r \right\} $<br>
-左閉右開 `[l, r)` 為 $ \left\{ x \in \mathbb{R}, l \leq x < r \right\} $<br>
-左開右閉 `(l, r]` 為 $ \left\{ x \in \mathbb{R}, l < x \leq r \right\} $<br>
+閉區間 [l, r] 為 $` \left\{ x \in \mathbb{R}, l \leq x \leq r \right\} `$<br>
+開區間 (l, r) 為 $` \left\{ x \in \mathbb{R}, l < x < r \right\} `$<br>
+左閉右開 [l, r) 為 $` \left\{ x \in \mathbb{R}, l \leq x < r \right\} `$<br>
+左開右閉 (l, r] 為 $` \left\{ x \in \mathbb{R}, l < x \leq r \right\} `$<br>
 <br>
 而程式碼中因為索引只能是整數<br>
 所以 $ x \in \mathbb{Z} $<br>
@@ -50,19 +57,19 @@ while(/* 區間不為空時執行 */){
 ## 區間
 
 以下二分搜以 lower_bound 舉例<br>
-(lower_bound：找到第一個 ≥ 目標的索引)
+(lower_bound：找到第一個 ≥ 目標的數)
 
 c++ algorithm 已經有 lower_bound()<br>
 因此以下代碼的函數以 my_lower_bound 命名
 
-以下代碼的<br>
-l 表示 left<br>
-r 表示 right<br>
-m 表示 middle<br>
-nums 為一個由小到大排好序的 vector<br>
-target 為要從中尋找的值
+**以下代碼的**<br>
+`l` 表示 left<br>
+`r` 表示 right<br>
+`m` 表示 middle<br>
+`nums` 為一個由小到大排好序的 vector<br>
+`target` 為要從中尋找的值
 
-### 閉區間 `[l, r]`
+### 閉區間 [l, r]
 
 ```cpp
 int my_lower_bound(vector<int>& nums, int target){
@@ -86,12 +93,12 @@ int my_lower_bound(vector<int>& nums, int target){
 ```
 
 
-### 左閉右開 `[l, r)`
+### 左閉右開 [l, r)
 
 包含 l：`nums[l]` 是有效的<br>
 不包含 r：`nums[r]` 是無效的，不會取到
 
-`l == r` 時，`[l, r)` 區間是空的所以跳出迴圈
+`l == r` 時，[l, r) 區間是空的所以跳出迴圈
 
 ```cpp
 int my_lower_bound(vector<int>& nums, int target){
@@ -124,7 +131,7 @@ int my_lower_bound(vector<int>& nums, int target){
 `nums[m] == target` 時 `r = m;`<br>
 下一次就會在 `[l, m)` 中進行搜索
 
-### 開區間 `(l, r)`
+### 開區間 (l, r)
 
 ```cpp
 int my_lower_bound(vector<int>& nums, int target){
@@ -146,18 +153,29 @@ int my_lower_bound(vector<int>& nums, int target){
 }
 ```
 
-## 尋找目標
+### 總結：閉 → m±1，開 → m
+
+## 尋找其他目標
+
+要尋找的目標不一定是 **第一個 ≥ 目標的數**<br>
+也有可能是<br>
+**第一個 > 目標的數**<br>
+`...`
+
+upper_bound：找到 ≥ 目標的索引<br>
 lower_bound：找到 ≥ 目標的索引
 
-### 選擇什麼? 開區間? 閉區間?
+## 選擇什麼? 開區間? 閉區間?
 
 個人喜歡用什麼就用什麼<br>
 沒有規定，只要能 AC 都可以
 
-### 總結：閉 → m±1，開 → m
-
+但是建議使用左閉右開，符合 C++ 的習慣<br>
+像是 sort vector 就是左閉右開<br>
+`sort(v.begin(), v.end());`
 
 ## if 中的判斷條件
+
 實際上寫題目不可能只有簡單的 `nums[m] < target`<br>
 就能判斷要縮 l 或是縮 r<br>
 <br>
