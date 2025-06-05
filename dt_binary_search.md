@@ -13,14 +13,19 @@ title: "二分搜"
 使用二分搜索的目的是提升速度<br>
 通常在 **需要多次查詢** 或是 **查詢範圍很大** 時會很有優勢
 
-*e.g.*<br>
+<details>
+<summary>查詢次數對比</summary>
+
+***
 對於 $` 10^{6} `$ 筆資料的 vector 而言<br>
 暴力總共需要比較 $` \color{Red} 10^{6} `$ 次<br>
 而二分搜索則是 $` \left \lceil log_{2}10^{6} \right \rceil = \color{Red} 20 `$ 次
 
+</details>
+
 ### 使用條件
 
-二分搜用在<font color=#ff0000>排好序</font>的陣列上
+二分搜用在 <font color=#ff0000>排好序</font> 的陣列上
 
 ### 加法溢位
 
